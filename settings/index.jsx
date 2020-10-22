@@ -69,15 +69,35 @@ function renderEditPage(props) {
             }
 
             // generate new item
-            const item = {
-              id: `${new Date().getTime()}-${Math.random().toString(36).substring(7)}`, // random id
-              name: props.settings.itemName,
-              letter: props.settings.itemLetter,
-              color: props.settings.itemColor,
-            };
+            if (props.settings.itemEditing === 'false') {
+              const item = {
+                id: `${new Date().getTime()}-${Math.random().toString(36).substring(7)}`, // random id
+                name: props.settings.itemName,
+                letter: props.settings.itemLetter,
+                color: props.settings.itemColor,
+              };
 
-            // add items
-            items.push(item);
+              // add item
+              items.push(item);
+
+            // editing
+            } else {
+              // generate item with existing id
+              const item = {
+                id: props.settings.itemEditing,
+                name: props.settings.itemName,
+                letter: props.settings.itemLetter,
+                color: props.settings.itemColor,
+              };
+
+              // find current item
+              const currentItem = items.find((i) => i.id === props.settings.itemEditing);
+
+              // remove current item when found
+              if (currentItem) {
+                items[items.indexOf(currentItem)] = item;
+              }
+            }
 
             // save items
             props.settingsStorage.setItem('items', JSON.stringify(items));
@@ -155,12 +175,16 @@ function renderMainPage(props) {
     <Page>
       <Section title="Settings">
         <Text>Hello world!</Text>
-        <Select />
+        <Select
+          settingsKey="letter"
+          label="Default Letter"
+          options={list}
+        />
       </Section>
       <Section title="Simple item list">
         <AdditiveList
           title="A list with Autocomplete"
-          settingsKey="autocomplete-list"
+          settingsKey="list"
           maxItems="5"
           addAction={(
             <TextInput

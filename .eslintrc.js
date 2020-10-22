@@ -20,6 +20,8 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 0,
     'react/jsx-no-undef': 0,
+    'react/destructuring-assignment': 0,
+    'max-len': 0,
   },
   globals: {
     registerSettingsPage: false,

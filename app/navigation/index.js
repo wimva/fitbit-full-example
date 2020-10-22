@@ -1,11 +1,10 @@
 import document from 'document';
-import * as indexPage from '../pages/index';
-import * as detailPage from '../pages/detail';
 
-export const pages = {
-  indexPage,
-  detailPage,
-};
+let pages = {};
+
+export function init(router) {
+  pages = router;
+}
 
 export function getPage() {
   const re = /.*\/+(.*)+\..*/;

@@ -1,20 +1,30 @@
 import document from 'document';
+import { switchPage } from '../navigation';
 
-let $elem = null;
+let $buttonDetail = null;
+let $buttonReplace = null;
 
 function doSomething() {
-  console.log('hallo');
-  console.log($elem);
+  console.log('hallo index');
 }
 
 export function destroy() {
   console.log('destroy index page');
-  $elem = null;
+  $buttonDetail = null;
+  $buttonReplace = null;
 }
 
 export function init() {
-  console.log('destroy index page');
-  $elem = document.getElementById('elem');
+  console.log('init index page');
+  $buttonDetail = document.getElementById('detail-button');
+  $buttonReplace = document.getElementById('replace-button');
+
+  $buttonDetail.onclick = () => {
+    switchPage('detail', true);
+  };
+  $buttonReplace.onclick = () => {
+    switchPage('replace');
+  };
 
   doSomething();
 }

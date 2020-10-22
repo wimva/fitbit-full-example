@@ -1,14 +1,11 @@
 <svg viewport-fill="#000000">
-  <textarea fill="#FF7B00" x="18" y="3" width="300" height="110" font-size="36" font-family="Colfax-Regular" text-anchor="middle" text-buffer="Welcome!" />
-  <textarea fill="white" x="18" y="50" width="300" height="200" font-size="26" font-family="Colfax-Regular" text-anchor="middle" text-buffer="This app is FREE! Only if you would like our premium features (adding favorites &amp; search) we require a payment of only $1.49" />
-  <use href="#button" fill="#999999" x="10%" y="100%-90" width="40%" height="60">
-    <set href="text" attributeName="text-buffer" to="Free" />
-    <set href="text" attributeName="font-size" to="26" />
-    <set href="handle" attributeName="id" to="intro-button-free" />
+  <textarea fill="#FFFF00" x="18" y="3" width="300" height="110" font-size="36" font-family="System-Regular" text-anchor="middle" text-buffer="Welcome!" />
+  <use href="#button" fill="#FFFF00" x="10%" y="100%-170" width="80%">
+    <set href="text" attributeName="text-buffer" to="Detail" />
+    <set href="handle" attributeName="id" to="detail-button" />
   </use>
-  <use href="#button" fill="#FF7B00" x="50%" y="100%-90" width="40%" height="60">
-    <set href="text" attributeName="text-buffer" to="Premium" />
-    <set href="text" attributeName="font-size" to="26" />
-    <set href="handle" attributeName="id" to="intro-button-premium" />
+  <use href="#button" fill="#FFFF00" x="10%" y="100%-90" width="80%">
+    <set href="text" attributeName="text-buffer" to="Replace" />
+    <set href="handle" attributeName="id" to="replace-button" />
   </use>
 </svg>

@@ -2,6 +2,7 @@ import * as cbor from 'cbor';
 import { outbox } from 'file-transfer';
 import { settingsStorage } from 'settings';
 import * as messaging from 'messaging';
+import { geolocation } from 'geolocation';
 
 /* Settings */
 function sendSettings() {
@@ -22,7 +23,7 @@ function sendSettings() {
 
 settingsStorage.addEventListener('change', sendSettings);
 
-/* Short messages */
+/* Sending short messages */
 function sendMessage() {
   const data = {
     companionTimestamp: new Date().getTime(),
@@ -40,3 +41,56 @@ messaging.peerSocket.addEventListener('open', () => {
 messaging.peerSocket.addEventListener('error', (err) => {
   console.error(`Connection error: ${err.code} - ${err.message}`);
 });
+
+/* API Fetch */
+function fetchWeather(coords) {
+  const API_KEY = 'f9b63381283aa5400f1e30ac2c38896c';
+  const UNITS = 'metric'; // This should be a setting in your settings as, there is no Fitbit defined °C / °F user-setting
+  const URL = `https://api.openweathermap.org/data/2.5/weather?units=${UNITS}&lat=${coords.latitude}&lon=${coords.longitude}&appid=${API_KEY}`;
+
+  fetch(URL)
+    .then((response) => {
+      response.json()
+        .then((data) => {
+          // We just want the current temperature
+          const weather = {
+            temperature: data.main.temp,
+          };
+
+          console.log(weather);
+
+          outbox.enqueue('weather.cbor', cbor.encode(weather))
+            .then(() => console.log('weather sent'))
+            .catch((error) => console.log(`send error: ${error}`));
+        });
+    })
+    .catch((err) => {
+      console.error(`Error fetching weather: ${err}`);
+      // Handle error and send error to device
+    });
+}
+
+/* Location functions */
+function locationSuccess(location) {
+  fetchWeather(location.coords);
+}
+
+function locationError(error) {
+  console.log(`Error: ${error.code}`, `Message: ${error.message}`);
+  // Handle location error (send message to device to show error)
+}
+
+/* handle device messages */
+function processMessaging(evt) {
+  console.log(evt.data);
+  switch (evt.data.command) {
+    case 'weather':
+      geolocation.getCurrentPosition(locationSuccess, locationError);
+      break;
+    default:
+      //
+      break;
+  }
+}
+
+messaging.peerSocket.addEventListener('message', processMessaging);

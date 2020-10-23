@@ -7,9 +7,11 @@ const state = {
   list: [],
   letter: '',
   companionTimestamp: 0,
+  temperature: 0,
 };
 
 // set callback so you can interact with this in your views
+// could be optimised though, as it calls for every updated value, so not specific
 let callback = null;
 
 export function setStateCallback(cb) {
@@ -33,6 +35,7 @@ function loadState() {
     if (typeof loadedState.list !== 'undefined') state.list = loadedState.list;
     if (typeof loadedState.letter !== 'undefined') state.letter = loadedState.letter;
     if (typeof loadedState.companionTimestamp !== 'undefined') state.companionTimestamp = loadedState.companionTimestamp;
+    if (typeof loadedState.temperature !== 'undefined') state.temperature = loadedState.temperature;
   } catch (err) {
     console.error(`Failed loading state: ${err}`);
   }
@@ -58,6 +61,13 @@ function processFiles() {
       if (typeof data.items !== 'undefined') state.items = data.items;
       if (typeof data.list !== 'undefined') state.list = data.list;
       if (typeof data.letter !== 'undefined') state.letter = data.letter;
+
+      updateState();
+      if (callback) callback();
+    } else if (fileName === 'weather.cbor') {
+      const data = filesystem.readFileSync(fileName, 'cbor');
+
+      if (typeof data.temperature !== 'undefined') state.temperature = data.temperature;
 
       updateState();
       if (callback) callback();

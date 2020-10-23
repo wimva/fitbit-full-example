@@ -1,5 +1,7 @@
-import { init, switchPage } from './navigation';
+import { init as initState } from './state';
+import { init as initNavigation, switchPage } from './navigation';
 import router from './router';
 
-init(router);
+initState();
+initNavigation(router);
 switchPage('index');

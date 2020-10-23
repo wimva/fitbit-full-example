@@ -1,7 +1,9 @@
 import * as cbor from 'cbor';
 import { outbox } from 'file-transfer';
 import { settingsStorage } from 'settings';
+import * as messaging from 'messaging';
 
+/* Settings */
 function sendSettings() {
   const settings = {
     items: settingsStorage.getItem('items') ? JSON.parse(settingsStorage.getItem('items')).map((item) => ({
@@ -19,3 +21,22 @@ function sendSettings() {
 }
 
 settingsStorage.addEventListener('change', sendSettings);
+
+/* Short messages */
+function sendMessage() {
+  const data = {
+    companionTimestamp: new Date().getTime(),
+  };
+
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send(data);
+  }
+}
+
+messaging.peerSocket.addEventListener('open', () => {
+  setInterval(sendMessage, 10000);
+});
+
+messaging.peerSocket.addEventListener('error', (err) => {
+  console.error(`Connection error: ${err.code} - ${err.message}`);
+});

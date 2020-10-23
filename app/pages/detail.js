@@ -1,5 +1,5 @@
 import document from 'document';
-import { fetchWeather } from '../communication';
+import { getWeather } from '../communication';
 import { getStateItem, setStateCallback, removeStateCallback } from '../state';
 
 let $button = null;
@@ -30,6 +30,6 @@ export function init() {
   };
 
   doSomething();
-  fetchWeather();
+  getWeather();
   setStateCallback(draw);
 }

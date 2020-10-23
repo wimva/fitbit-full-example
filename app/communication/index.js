@@ -1,7 +1,7 @@
 import * as messaging from 'messaging';
 
 // get weather
-export function fetchWeather() {
+export function getWeather() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
       command: 'weather',
@@ -12,6 +12,6 @@ export function fetchWeather() {
 // set up
 export function init() {
   messaging.peerSocket.addEventListener('open', () => {
-    fetchWeather();
+    getWeather();
   });
 }

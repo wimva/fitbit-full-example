@@ -44,7 +44,7 @@ messaging.peerSocket.addEventListener('error', (err) => {
 
 /* API Fetch */
 function fetchWeather(coords) {
-  const API_KEY = 'f9b63381283aa5400f1e30ac2c38896c';
+  const API_KEY = 'your-key-here';
   const UNITS = 'metric'; // This should be a setting in your settings as, there is no Fitbit defined °C / °F user-setting
   const URL = `https://api.openweathermap.org/data/2.5/weather?units=${UNITS}&lat=${coords.latitude}&lon=${coords.longitude}&appid=${API_KEY}`;
 

@@ -44,6 +44,7 @@ module.exports = {
       'file-transfer',
       'haptics',
       'power',
+      'app-cluster-storage',
       'device',
       'peer',
     ],

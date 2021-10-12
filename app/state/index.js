@@ -8,18 +8,19 @@ const state = {
   letter: '',
   companionTimestamp: 0,
   temperature: 0,
+  // add other state-items here
 };
 
-// set callback so you can interact with this in your views
+// set callbacks so you can interact with this in your views
 // could be optimised though, as it calls for every updated value, so not specific
-let callback = null;
+const callbacks = {};
 
-export function setStateCallback(cb) {
-  callback = cb;
+export function setStateCallback(key, cb) {
+  callbacks[key] = cb;
 }
 
-export function removeStateCallback() {
-  callback = null;
+export function removeStateCallback(key) {
+  callbacks[key] = null;
 }
 
 // save state to local storage on watch so it's always avaialble at start of app
@@ -31,11 +32,10 @@ function updateState() {
 function loadState() {
   try {
     const loadedState = filesystem.readFileSync('state.txt', 'json');
-    if (typeof loadedState.items !== 'undefined') state.items = loadedState.items;
-    if (typeof loadedState.list !== 'undefined') state.list = loadedState.list;
-    if (typeof loadedState.letter !== 'undefined') state.letter = loadedState.letter;
-    if (typeof loadedState.companionTimestamp !== 'undefined') state.companionTimestamp = loadedState.companionTimestamp;
-    if (typeof loadedState.temperature !== 'undefined') state.temperature = loadedState.temperature;
+    Object.keys(state).forEach((key) => {
+      if (typeof loadedState[key] !== 'undefined')
+        state[key] = loadedState[key];
+    });
   } catch (err) {
     console.error(`Failed loading state: ${err}`);
   }
@@ -51,36 +51,46 @@ export function setStateItem(key, value) {
   updateState();
 }
 
+// callback
+function callback() {
+  Object.keys(callbacks).forEach((key) => {
+    if (callbacks[key]) callbacks[key]();
+  });
+}
+
 // process file transfer files
 function processFiles() {
   let fileName;
-  while (fileName = inbox.nextFile()) { // eslint-disable-line
+  while ((fileName = inbox.nextFile())) {
+    // eslint-disable-line
     if (fileName === 'settings.cbor') {
       const data = filesystem.readFileSync(fileName, 'cbor');
 
-      if (typeof data.items !== 'undefined') state.items = data.items;
-      if (typeof data.list !== 'undefined') state.list = data.list;
-      if (typeof data.letter !== 'undefined') state.letter = data.letter;
+      Object.keys(state).forEach((key) => {
+        if (typeof data[key] !== 'undefined') state[key] = data[key];
+      });
 
       updateState();
-      if (callback) callback();
+      callback();
     } else if (fileName === 'weather.cbor') {
       const data = filesystem.readFileSync(fileName, 'cbor');
 
-      if (typeof data.temperature !== 'undefined') state.temperature = data.temperature;
+      if (typeof data.temperature !== 'undefined')
+        state.temperature = data.temperature;
 
       updateState();
-      if (callback) callback();
+      callback();
     }
   }
 }
 
 // process messages
 function processMessaging(evt) {
-  if (typeof evt.data.companionTimestamp !== 'undefined') state.companionTimestamp = evt.data.companionTimestamp;
+  if (typeof evt.data.companionTimestamp !== 'undefined')
+    state.companionTimestamp = evt.data.companionTimestamp;
 
   updateState();
-  if (callback) callback();
+  callback();
 }
 
 // set up

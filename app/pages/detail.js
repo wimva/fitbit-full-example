@@ -17,7 +17,7 @@ export function destroy() {
   console.log('destroy detail page');
   $temperature = null;
   $button = null;
-  removeStateCallback();
+  removeStateCallback('detail');
 }
 
 export function init() {
@@ -31,5 +31,5 @@ export function init() {
 
   doSomething();
   getWeather();
-  setStateCallback(draw);
+  setStateCallback('detail', draw);
 }

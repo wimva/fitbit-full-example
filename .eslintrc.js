@@ -1,27 +1,23 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    node: true,
+  },
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 2018,
   },
   extends: [
+    'eslint:recommended',
+    'plugin:import/recommended',
     'plugin:react/recommended',
-    'airbnb',
-  ],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 12,
-    sourceType: 'module',
-  },
-  plugins: [
-    'react',
+    'prettier',
   ],
   rules: {
-    'react/react-in-jsx-scope': 0,
-    'react/jsx-no-undef': 0,
-    'react/destructuring-assignment': 0,
-    'max-len': 0,
+    'no-console': 'warn',
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-no-undef': 'off',
+    'react/destructuring-assignment': 'off',
   },
   globals: {
     registerSettingsPage: false,
@@ -42,9 +38,9 @@ module.exports = {
       'local-storage',
       'heart-rate',
       'file-transfer',
+      'app-cluster-storage',
       'haptics',
       'power',
-      'app-cluster-storage',
       'device',
       'peer',
     ],

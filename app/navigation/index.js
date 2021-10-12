@@ -2,46 +2,44 @@ import document from 'document';
 
 let pages = {};
 
-// initialize navigation
+// De navigatie initialiseren met de router (zie router.js)
 export function init(router) {
   pages = router;
 }
 
-// get current page
+// De naam van de huidige view ophalen.
 export function getPage() {
   const re = /.*\/+(.*)+\..*/;
   return document.location.pathname.replace(re, '$1');
 }
 
-// when page unloads (swipe back)
+// Functie wordt hieronder aangeroepen. Nodig voor het terugswipen.
 export function onUnload() {
   const page = getPage();
   if (pages[page] && pages[page].destroy) pages[page].destroy();
 }
 
-// navigate to another page
 export async function switchPage(nextPage, stack) {
   const pagePath = `./resources/pages/${nextPage}.view`;
 
-  // when page is not the same as current page
+  // Controleren of de geselecteerde pagina niet huidige pagina is.
   if (pagePath !== document.location.pathname) {
-    const page = getPage();
     if (stack) {
       await document.location.assign(pagePath);
     } else {
       await document.location.replace(pagePath);
     }
 
-    // set swipe back handler
+    // De huidige pagina in een constante steken zodat we deze in de functies hieronder kunnen gebruiken.
+    const page = getPage();
+
+    // Event om te weten wanneer er wordt teruggeswiped.
     document.onbeforeunload = onUnload;
 
-    // destroy previous page
+    // De vorige pagina vernietigen.
     if (!stack && pages[page] && pages[page].destroy) pages[page].destroy();
 
-    // make sure to destroy new page first so we start off from an empty slate
-    if (pages[nextPage] && pages[nextPage].destroy) pages[nextPage].destroy();
-
-    // start up new page
+    // Een nieuwe pagina starten.
     if (pages[nextPage] && pages[nextPage].init) pages[nextPage].init();
   }
 }

@@ -28,7 +28,7 @@ export function destroy() {
   $button = null;
   $letter = null;
   $timestamp = null;
-  removeStateCallback();
+  removeStateCallback('replace');
 }
 
 export function init() {
@@ -40,7 +40,7 @@ export function init() {
     switchPage('index');
   };
 
-  setStateCallback(draw);
+  setStateCallback('replace', draw);
   doSomething();
   draw();
 }

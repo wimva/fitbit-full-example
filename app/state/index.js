@@ -7,7 +7,7 @@ const state = {
   list: [],
   letter: '',
   companionTimestamp: 0,
-  temperature: 0,
+  location: '',
   // add other state-items here
 };
 
@@ -62,7 +62,6 @@ function callback() {
 function processFiles() {
   let fileName;
   while ((fileName = inbox.nextFile())) {
-    // eslint-disable-line
     if (fileName === 'settings.cbor') {
       const data = filesystem.readFileSync(fileName, 'cbor');
 
@@ -70,13 +69,16 @@ function processFiles() {
         if (typeof data[key] !== 'undefined') state[key] = data[key];
       });
 
+      console.log(JSON.stringify(state));
+
       updateState();
       callback();
-    } else if (fileName === 'weather.cbor') {
+    } else if (fileName === 'location.cbor') {
       const data = filesystem.readFileSync(fileName, 'cbor');
 
-      if (typeof data.temperature !== 'undefined')
-        state.temperature = data.temperature;
+      Object.keys(state).forEach((key) => {
+        if (typeof data[key] !== 'undefined') state[key] = data[key];
+      });
 
       updateState();
       callback();
@@ -86,8 +88,9 @@ function processFiles() {
 
 // process messages
 function processMessaging(evt) {
-  if (typeof evt.data.companionTimestamp !== 'undefined')
-    state.companionTimestamp = evt.data.companionTimestamp;
+  Object.keys(state).forEach((key) => {
+    if (typeof evt.data[key] !== 'undefined') state[key] = evt.data[key];
+  });
 
   updateState();
   callback();

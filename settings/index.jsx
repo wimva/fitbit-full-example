@@ -30,6 +30,7 @@ const colors = [
   { color: '#039898' },
 ];
 
+/* Edit Page (for complex list items) */
 function renderEditPage(props) {
   return (
     <Page>
@@ -51,12 +52,14 @@ function renderEditPage(props) {
           settingsKey="itemLetter"
           label="Letter"
           placeholder="Type something"
-          onAutocomplete={(value) => list.filter((option) => option.name.toLowerCase().indexOf(value.toLowerCase()) >= 0)}
+          onAutocomplete={(value) =>
+            list.filter(
+              (option) =>
+                option.name.toLowerCase().indexOf(value.toLowerCase()) >= 0,
+            )
+          }
         />
-        <ColorSelect
-          settingsKey="itemColor"
-          colors={colors}
-        />
+        <ColorSelect settingsKey="itemColor" colors={colors} />
       </Section>
       <Section title="Actions">
         <Button
@@ -64,14 +67,19 @@ function renderEditPage(props) {
           onClick={() => {
             // get current item list
             let items = [];
-            if (props.settings.items && JSON.parse(props.settings.items).length) {
+            if (
+              props.settings.items &&
+              JSON.parse(props.settings.items).length
+            ) {
               items = JSON.parse(props.settings.items);
             }
 
             // generate new item
             if (props.settings.itemEditing === 'false') {
               const item = {
-                id: `${new Date().getTime()}-${Math.random().toString(36).substring(7)}`, // random id
+                id: `${new Date().getTime()}-${Math.random()
+                  .toString(36)
+                  .substring(7)}`, // random id
                 name: props.settings.itemName,
                 letter: props.settings.itemLetter,
                 color: props.settings.itemColor,
@@ -80,7 +88,7 @@ function renderEditPage(props) {
               // add item
               items.push(item);
 
-            // editing
+              // editing
             } else {
               // generate item with existing id
               const item = {
@@ -91,7 +99,9 @@ function renderEditPage(props) {
               };
 
               // find current item
-              const currentItem = items.find((i) => i.id === props.settings.itemEditing);
+              const currentItem = items.find(
+                (i) => i.id === props.settings.itemEditing,
+              );
 
               // remove current item when found
               if (currentItem) {
@@ -112,12 +122,17 @@ function renderEditPage(props) {
             onClick={() => {
               // get current item list
               let items = [];
-              if (props.settings.items && JSON.parse(props.settings.items).length) {
+              if (
+                props.settings.items &&
+                JSON.parse(props.settings.items).length
+              ) {
                 items = JSON.parse(props.settings.items);
               }
 
               // find current item
-              const currentItem = items.find((item) => item.id === props.settings.itemEditing);
+              const currentItem = items.find(
+                (item) => item.id === props.settings.itemEditing,
+              );
 
               // remove current item when found
               if (currentItem) {
@@ -143,6 +158,7 @@ function renderEditPage(props) {
   );
 }
 
+/* Main Settings Page */
 function renderMainPage(props) {
   let items = null;
 
@@ -166,35 +182,34 @@ function renderMainPage(props) {
       />
     ));
   } else {
-    items = (
-      <Text>Add your first item</Text>
-    );
+    items = <Text>Add your first item</Text>;
   }
 
   return (
     <Page>
       <Section title="Settings">
         <Text>Hello world!</Text>
-        <Select
-          settingsKey="letter"
-          label="Default Letter"
-          options={list}
-        />
+        <Select settingsKey="letter" label="Default Letter" options={list} />
       </Section>
       <Section title="Simple item list">
         <AdditiveList
           title="A list with Autocomplete"
           settingsKey="list"
           maxItems="5"
-          addAction={(
+          addAction={
             <TextInput
               title="Add List Item"
               label="➡️ Add item"
               placeholder="Type something"
               action="Add Item"
-              onAutocomplete={(value) => list.filter((option) => option.name.toLowerCase().indexOf(value.toLowerCase()) >= 0)}
+              onAutocomplete={(value) =>
+                list.filter(
+                  (option) =>
+                    option.name.toLowerCase().indexOf(value.toLowerCase()) >= 0,
+                )
+              }
             />
-          )}
+          }
         />
       </Section>
       <Section title="Complex items with multiple values">

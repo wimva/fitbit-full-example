@@ -1,6 +1,6 @@
 <svg viewport-fill="#000000">
   <textarea fill="#00FFFF" x="18" y="3" width="300" height="110" font-size="36" font-family="System-Regular" text-anchor="middle" text-buffer="Detail!" />
-  <text id="temperature" fill="white" x="50%" y="100" width="300" font-size="36" font-family="System-Regular" text-anchor="middle" text-length="20" text-buffer="loading" />
+  <text id="location" fill="white" x="50%" y="100" width="300" font-size="36" font-family="System-Regular" text-anchor="middle" text-length="20" text-buffer="loading" />
   <use href="#button" fill="#00FFFF" x="10%" y="100%-90" width="80%">
     <set href="text" attributeName="text-buffer" to="Back" />
     <set href="handle" attributeName="id" to="back-button" />

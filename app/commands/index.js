@@ -1,10 +1,10 @@
 import * as messaging from 'messaging';
 
 // get weather
-export function getWeather() {
+export function getLocationName() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     messaging.peerSocket.send({
-      command: 'weather',
+      command: 'location',
     });
   }
 }
@@ -12,6 +12,6 @@ export function getWeather() {
 // set up
 export function init() {
   messaging.peerSocket.addEventListener('open', () => {
-    getWeather();
+    getLocationName();
   });
 }

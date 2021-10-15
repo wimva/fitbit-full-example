@@ -3,6 +3,7 @@ import { outbox } from 'file-transfer';
 import { settingsStorage } from 'settings';
 import * as messaging from 'messaging';
 import { geolocation } from 'geolocation';
+import { API_KEY } from './keys';
 
 /* Settings */
 function sendSettings() {
@@ -31,7 +32,7 @@ function sendSettings() {
 settingsStorage.addEventListener('change', sendSettings);
 
 /* Sending short messages */
-function sendMessage() {
+function sendShortMessage() {
   const data = {
     companionTimestamp: new Date().getTime(),
   };
@@ -42,7 +43,7 @@ function sendMessage() {
 }
 
 messaging.peerSocket.addEventListener('open', () => {
-  setInterval(sendMessage, 10000);
+  setInterval(sendShortMessage, 10000);
 });
 
 messaging.peerSocket.addEventListener('error', (err) => {
@@ -50,36 +51,32 @@ messaging.peerSocket.addEventListener('error', (err) => {
 });
 
 /* API Fetch */
-function fetchWeather(coords) {
-  const API_KEY = 'your-key-here';
-  const UNITS = 'metric'; // This should be a setting in your settings as, there is no Fitbit defined °C / °F user-setting
-  const URL = `https://api.openweathermap.org/data/2.5/weather?units=${UNITS}&lat=${coords.latitude}&lon=${coords.longitude}&appid=${API_KEY}`;
+async function fetchLocationName(coords) {
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json?access_token=${API_KEY}`;
 
-  fetch(URL)
-    .then((response) => {
-      response.json().then((data) => {
-        // We just want the current temperature
-        const weather = {
-          temperature: data.main.temp,
-        };
+  const response = await fetch(url);
+  const json = await response.json();
 
-        console.log(weather);
+  let location = '';
+  json.features.forEach((feature) => {
+    if (
+      !location &&
+      (feature.place_type[0] === 'locality' ||
+        feature.place_type[0] === 'place')
+    ) {
+      location = feature.text;
+    }
+  });
 
-        outbox
-          .enqueue('weather.cbor', cbor.encode(weather))
-          .then(() => console.log('weather sent'))
-          .catch((error) => console.log(`send error: ${error}`));
-      });
-    })
-    .catch((err) => {
-      console.error(`Error fetching weather: ${err}`);
-      // Handle error and send error to device
-    });
+  outbox
+    .enqueue('location.cbor', cbor.encode({ location }))
+    .then(() => console.log(location + ' as location sent'))
+    .catch((error) => console.log(`send error: ${error}`));
 }
 
 /* Location functions */
 function locationSuccess(location) {
-  fetchWeather(location.coords);
+  fetchLocationName(location.coords);
 }
 
 function locationError(error) {
@@ -87,11 +84,11 @@ function locationError(error) {
   // Handle location error (send message to device to show error)
 }
 
-/* handle device messages */
+/* Handle messages coming from device */
 function processMessaging(evt) {
   console.log(evt.data);
   switch (evt.data.command) {
-    case 'weather':
+    case 'location':
       geolocation.getCurrentPosition(locationSuccess, locationError);
       break;
     default:

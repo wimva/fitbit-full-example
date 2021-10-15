@@ -37,6 +37,7 @@ export function init() {
   $timestamp = document.getElementById('timestamp');
   $button = document.getElementById('back-button');
   $button.onclick = () => {
+    destroy();
     switchPage('index');
   };
 

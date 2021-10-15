@@ -1,28 +1,28 @@
 import document from 'document';
-import { getWeather } from '../communication';
+import { getLocationName } from '../commands';
 import { getStateItem, setStateCallback, removeStateCallback } from '../state';
 
 let $button = null;
-let $temperature = null;
+let $locationName = null;
 
 function doSomething() {
   console.log('hallo detail');
 }
 
 function draw() {
-  $temperature.text = getStateItem('temperature');
+  $locationName.text = getStateItem('location');
 }
 
 export function destroy() {
   console.log('destroy detail page');
-  $temperature = null;
+  $locationName = null;
   $button = null;
   removeStateCallback('detail');
 }
 
 export function init() {
   console.log('init detail page');
-  $temperature = document.getElementById('temperature');
+  $locationName = document.getElementById('location');
   $button = document.getElementById('back-button');
   $button.onclick = () => {
     destroy();
@@ -30,6 +30,7 @@ export function init() {
   };
 
   doSomething();
-  getWeather();
+  getLocationName();
   setStateCallback('detail', draw);
+  // draw();
 }

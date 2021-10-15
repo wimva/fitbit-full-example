@@ -22,6 +22,9 @@ export function onUnload() {
 export async function switchPage(nextPage, stack) {
   const pagePath = `./resources/pages/${nextPage}.view`;
 
+  // De huidige pagina in een constante steken zodat we deze in de functies hieronder kunnen gebruiken.
+  const page = getPage();
+
   // Controleren of de geselecteerde pagina niet huidige pagina is.
   if (pagePath !== document.location.pathname) {
     if (stack) {
@@ -29,9 +32,6 @@ export async function switchPage(nextPage, stack) {
     } else {
       await document.location.replace(pagePath);
     }
-
-    // De huidige pagina in een constante steken zodat we deze in de functies hieronder kunnen gebruiken.
-    const page = getPage();
 
     // Event om te weten wanneer er wordt teruggeswiped.
     document.onbeforeunload = onUnload;

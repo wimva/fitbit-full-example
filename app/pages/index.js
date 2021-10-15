@@ -20,7 +20,7 @@ export function init() {
   $buttonReplace = document.getElementById('replace-button');
 
   $buttonDetail.onclick = () => {
-    switchPage('detail', true);
+    switchPage('detail');
   };
   $buttonReplace.onclick = () => {
     switchPage('replace');

@@ -1,4 +1,5 @@
 import document from 'document';
+import { switchPage } from '../navigation';
 import { getLocationName } from '../commands';
 import { getStateItem, setStateCallback, removeStateCallback } from '../state';
 
@@ -26,7 +27,7 @@ export function init() {
   $button = document.getElementById('back-button');
   $button.onclick = () => {
     destroy();
-    document.history.back();
+    switchPage('index');
   };
 
   doSomething();

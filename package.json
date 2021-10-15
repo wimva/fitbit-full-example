@@ -4,7 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
-    "@fitbit/sdk": "~6.0.2",
+    "@fitbit/sdk": "~4.3.2",
     "@fitbit/sdk-cli": "^1.7.3",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.3.0",
@@ -21,8 +21,10 @@
     "wipeColor": "#ffffff",
     "requestedPermissions": [],
     "buildTargets": [
-      "atlas",
-      "vulcan"
+      "mira",
+      "higgs",
+      "meson",
+      "gemini"
     ],
     "i18n": {},
     "defaultLanguage": "en-US"

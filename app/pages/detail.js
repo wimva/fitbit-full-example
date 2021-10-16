@@ -1,12 +1,16 @@
 import document from 'document';
 import { getLocationName } from '../commands';
 import { getStateItem, setStateCallback, removeStateCallback } from '../state';
+import { gettext } from 'i18n';
+import { locale } from 'user-settings';
 
 let $button = null;
 let $locationName = null;
 
 function doSomething() {
   console.log('hallo detail');
+  console.log(gettext('welcome'));
+  console.log(locale.language);
 }
 
 function draw() {

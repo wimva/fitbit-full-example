@@ -1,5 +1,5 @@
 <svg viewport-fill="#000000">
-  <textarea fill="#FFFF00" x="18" y="3" width="300" height="110" font-size="36" font-family="System-Regular" text-anchor="middle" text-buffer="Welcome!" />
+  <textarea fill="#FFFF00" x="18" y="3" width="300" height="110" font-size="36" font-family="System-Regular" text-anchor="middle" text-buffer="_welcome" />
   <use href="#button" fill="#FFFF00" x="10%" y="100%-170" width="80%">
     <set href="text" attributeName="text-buffer" to="Detail" />
     <set href="handle" attributeName="id" to="detail-button" />

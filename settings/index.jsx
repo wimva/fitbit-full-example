@@ -1,3 +1,5 @@
+import { gettext } from 'i18n';
+
 const list = [
   { name: 'Alpha', value: 'Alpha' },
   { name: 'Beta', value: 'Beta' },
@@ -188,7 +190,7 @@ function renderMainPage(props) {
   return (
     <Page>
       <Section title="Settings">
-        <Text>Hello world!</Text>
+        <Text>{gettext('hello_world')}</Text>
         <Select settingsKey="letter" label="Default Letter" options={list} />
       </Section>
       <Section title="Simple item list">

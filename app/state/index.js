@@ -3,6 +3,8 @@ import * as filesystem from 'fs';
 import * as messaging from 'messaging';
 
 const state = {
+  listData: [],
+  listItem: null,
   items: [],
   list: [],
   letter: '',
@@ -74,6 +76,24 @@ function processFiles() {
       updateState();
       callback();
     } else if (fileName === 'location.cbor') {
+      const data = filesystem.readFileSync(fileName, 'cbor');
+
+      Object.keys(state).forEach((key) => {
+        if (typeof data[key] !== 'undefined') state[key] = data[key];
+      });
+
+      updateState();
+      callback();
+    } else if (fileName === 'listData.cbor') {
+      const data = filesystem.readFileSync(fileName, 'cbor');
+
+      Object.keys(state).forEach((key) => {
+        if (typeof data[key] !== 'undefined') state[key] = data[key];
+      });
+
+      updateState();
+      callback();
+    } else if (fileName === 'listItem.cbor') {
       const data = filesystem.readFileSync(fileName, 'cbor');
 
       Object.keys(state).forEach((key) => {

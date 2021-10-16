@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="pages/index.css" />
 
     <link rel="stylesheet" href="components/button.css" />
+    <link rel="stylesheet" href="components/listItem.css" />
 
     <link rel="import" href="/mnt/sysassets/system_widget.defs" />
 
+    <link rel="import" href="/mnt/sysassets/widgets/baseview_widget.defs" />
+    <link rel="import" href="/mnt/sysassets/widgets/scrollbar.defs" />
+    <link rel="import" href="/mnt/sysassets/widgets/tile_list_widget.defs" />
+
     <link rel="import" href="components/button.gui" />
+    <link rel="import" href="components/listItem.gui" />
   </defs>
 </svg>

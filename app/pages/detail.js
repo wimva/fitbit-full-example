@@ -1,5 +1,5 @@
 import document from 'document';
-import { getLocationName } from '../commands';
+import { getLocationName, getListItem } from '../commands';
 import { getStateItem, setStateCallback, removeStateCallback } from '../state';
 
 let $button = null;
@@ -10,7 +10,11 @@ function doSomething() {
 }
 
 function draw() {
-  $locationName.text = getStateItem('location');
+  const item = getStateItem('listItem');
+  console.log(JSON.stringify(item));
+  if (item) {
+    $locationName.text = item.user;
+  }
 }
 
 export function destroy() {
@@ -31,6 +35,7 @@ export function init() {
 
   doSomething();
   getLocationName();
+  getListItem(getStateItem('detailId'));
   setStateCallback('detail', draw);
   // draw();
 }

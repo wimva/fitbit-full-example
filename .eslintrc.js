@@ -43,6 +43,8 @@ module.exports = {
       'power',
       'device',
       'peer',
+      'image',
+      'jpeg',
     ],
   },
 };

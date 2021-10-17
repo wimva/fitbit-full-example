@@ -3,6 +3,7 @@ import { outbox } from 'file-transfer';
 import { settingsStorage } from 'settings';
 import * as messaging from 'messaging';
 import { geolocation } from 'geolocation';
+import { Image } from 'image';
 import { API_KEY } from './keys';
 
 /* Settings */
@@ -74,9 +75,29 @@ async function fetchLocationName(coords) {
     .catch((error) => console.log(`send error: ${error}`));
 }
 
+/* Get Map */
+async function getMap(coords) {
+  const url = `https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/pin-l+3a88fe(4.415464,51.229788),pin-s+94e3fe(${coords.longitude},${coords.latitude})/auto/336x336?padding=30%2C30%2C30%2C30&access_token=${API_KEY}`;
+
+  fetch(url)
+    .then((response) => response.arrayBuffer())
+    .then((buffer) => Image.from(buffer, 'image/png'))
+    .then((image) =>
+      image.export('image/jpeg', {
+        background: '#000000',
+        quality: 40,
+      }),
+    )
+    .then((buffer) => outbox.enqueue(`map-${Date.now()}.jpg`, buffer))
+    .then((fileTransfer) => {
+      console.log(`Enqueued ${fileTransfer.name}`);
+    });
+}
+
 /* Location functions */
 function locationSuccess(location) {
   fetchLocationName(location.coords);
+  getMap(location.coords);
 }
 
 function locationError(error) {
